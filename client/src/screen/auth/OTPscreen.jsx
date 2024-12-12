@@ -1,8 +1,11 @@
 import React, { useState, useRef } from "react";
+import ArrowLeft from "../../component/button/arrowLeft";
 
 function OTPscreen() {
-  const [otp, setOtp] = useState(Array(4).fill("")); // Array with 6 empty strings
-  const inputRefs = useRef([]); // Array of refs for each input field
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [otp, setOtp] = useState(Array(4).fill(""));
+  const inputRefs = useRef([]);
+  const phone_number = user ? user.nomorHP : "";
 
   const handleKeyDown = (e) => {
     if (
@@ -58,24 +61,51 @@ function OTPscreen() {
   };
 
   return (
-    <section className="bg-white py-10 dark:bg-dark">
-      <div className="container bg-red-500">
-        <form id="otp-form" className="flex gap-2">
-          {otp.map((digit, index) => (
-            <input
-              key={index}
-              type="text"
-              maxLength={1}
-              value={digit}
-              onChange={handleInput}
-              onKeyDown={handleKeyDown}
-              onFocus={handleFocus}
-              onPaste={handlePaste}
-              ref={(el) => (inputRefs.current[index] = el)}
-              className="shadow-xs flex w-[64px] items-center justify-center rounded-lg border border-stroke bg-white p-2 text-center text-2xl font-medium text-gray-5 outline-none sm:text-4xl dark:border-dark-3 dark:bg-white/5"
-            />
-          ))}
-          {/* You can conditionally render a submit button here based on otp length */}
+    <section className="bg-white py-10 dark:bg-dark flex flex-col items-center space-y-8">
+      <header className="flex bg-white w-full h-fit p-2 justify-center items-center">
+        <button class="bg-transparent border-none absolute left-5">
+          <ArrowLeft />
+        </button>
+        <h6 class="text-center font-nunito font-semibold text-lg text-textColor w-full justify-center">
+          Verifikasi
+        </h6>
+      </header>
+      <p className="text-sm font-medium font-nunito text-textColor w-[70%] text-center">
+        Kode verifikasi telah kami kirim ke nomor Whatsapp{" "}
+        <span className="text-primary">+62056789965{phone_number}</span>
+      </p>
+      <div className="container flex flex-col items-center">
+        <form id="otp-form" className="flex flex-col gap-3 ">
+          <div className="flex gap-3">
+            {otp.map((digit, index) => (
+              <input
+                key={index}
+                type="text"
+                maxLength={1}
+                value={digit}
+                onChange={handleInput}
+                onKeyDown={handleKeyDown}
+                onFocus={handleFocus}
+                onPaste={handlePaste}
+                ref={(el) => (inputRefs.current[index] = el)}
+                className="shadow-xs flex w-16 h-16 items-center justify-center rounded-lg border border-stroke bg-white p-2 text-center text-2xl font-medium text-gray-5 outline-none sm:text-4xl dark:border-dark-3 dark:bg-white/5"
+              />
+            ))}
+          </div>
+
+          <div className="my-8">
+            <p className="text-center text-disableText text-xs font-medium font-nunito">
+              Saya tidak menerima kode
+            </p>
+            <button className="text-sm  w-full text-center font-semibold font-nunito text-primary">
+              Kirim Ulang
+            </button>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-primary font-semibold p-2 text-white rounded-full">
+            Lanjutkan
+          </button>
         </form>
       </div>
     </section>
