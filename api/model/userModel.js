@@ -32,6 +32,13 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  isVerivied: {
+    type: Boolean,
+    default: false,
+  },
+  foto: {
+    type: String,
+  },
 });
 
 const userModel = mongoose.model("User", userSchema);
