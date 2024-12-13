@@ -1,6 +1,4 @@
-const { Double } = require("bson");
 const mongoose = require("mongoose");
-const { type } = require("os");
 
 const userSchema = new mongoose.Schema({
   nama: {
@@ -23,23 +21,27 @@ const userSchema = new mongoose.Schema({
   },
   pin: {
     type: Number,
+    min: 1000,
+    max: 9999,
   },
   saldo: {
-    type: Double,
+    type: Number,
     default: 0,
   },
   point: {
     type: Number,
     default: 0,
   },
-  isVerivied: {
+  isVerified: {
     type: Boolean,
     default: false,
   },
   foto: {
     type: String,
+    default: null,
   },
 });
 
 const userModel = mongoose.model("User", userSchema);
+
 module.exports = userModel;
