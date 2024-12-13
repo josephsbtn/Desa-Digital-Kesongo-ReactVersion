@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../component/SplashScreen/logo";
+import Logo from "../component/Logo/logo";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 

@@ -7,6 +7,26 @@ function OTPscreen() {
   const inputRefs = useRef([]);
   const phone_number = user ? user.nomorHP : "";
 
+  // Store OTP temporarily (You can use session, database, etc.)
+  let storedOTP = ""; // This should be replaced with a more secure method like a session store
+
+  // Function to start OTP process
+  // const initiateOTP = async (userPhoneNumber) => {
+  //   const otpCode = await sendOTP(userPhoneNumber); // Send OTP to the user's phone
+  //   storedOTP = otpCode; // Store OTP for later verification
+  // };
+
+  // Function to verify OTP entered by the user
+  const verifyOTP = (userInputOTP) => {
+    if (storedOTP === userInputOTP) {
+      console.log("OTP Verified Successfully");
+      return true; // OTP is correct
+    } else {
+      console.log("Incorrect OTP");
+      return false; // OTP is incorrect
+    }
+  };
+
   const handleKeyDown = (e) => {
     if (
       !/^[0-9]{1}$/.test(e.key) &&

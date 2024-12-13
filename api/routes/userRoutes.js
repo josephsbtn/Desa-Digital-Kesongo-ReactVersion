@@ -32,11 +32,16 @@ router.post("/login", async (req, res) => {
     const user = await userModel.findOne({
       $or: [{ email: authentication }, { nomorHP: authentication }],
     });
+    if (!user.isVerified) {
+      return res
+        .status(400)
+        .json({ message: "Akun belum melakukan verifikasi!" });
+    }
     if (!user) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "Akun tidak ditemukan!" });
     }
     if (user.password !== password) {
-      return res.status(400).json({ message: "Invalid password" });
+      return res.status(400).json({ message: "Password salah!" });
     }
     res.send(user);
   } catch (error) {
@@ -63,6 +68,22 @@ router.put("/updateProfile", async (req, res) => {
   }
 });
 
+const sendOTP = async (toPhoneNumber) => {
+  const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+  try {
+    await client.messages.create({
+      body: `Your OTP code is: ${otpCode}`,
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: `whatsapp:${toPhoneNumber}`,
+    });
+    storedOTP = otpCode;
+    console.log("OTP sent:", otpCode);
+    return otpCode;
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+  }
+};
+
 router.post("/send-code", async (req, res) => {
   try {
     const { phone_number } = req.body;
@@ -71,16 +92,7 @@ router.post("/send-code", async (req, res) => {
       return res.status(400).json({ message: "Nomor telepon tidak valid" });
     }
 
-    const verificationOptions = {
-      service_name: "DESA DIGITAL KESONGO",
-      seconds: 600,
-    };
-
-    const result = await textflow.sendVerificationSMS(
-      phone_number,
-      verificationOptions
-    );
-
+    const result = await sendOTP(phone_number);
     if (result.status !== 200) {
       return res.status(result.status).json({ message: result.message });
     }
