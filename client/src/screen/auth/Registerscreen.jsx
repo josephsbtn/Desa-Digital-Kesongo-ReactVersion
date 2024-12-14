@@ -12,7 +12,7 @@ function Register() {
   const [accept, setAccept] = useState(false);
   const [error, setError] = useState("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const { parsePhoneNumberFromString } = require("libphonenumber-js");
+  //const { parsePhoneNumberFromString } = require("libphonenumber-js");
 
   function formatPhoneNumber(phoneNumber) {
     try {
