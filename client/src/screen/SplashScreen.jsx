@@ -4,12 +4,12 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function SplashScreen() {
-  //   const navigate = useNavigate();
-  //   useEffect(() => {
-  //     setTimeout(() => {
-  //       navigate("/login");
-  //     }, 2000);
-  //   });
+   const navigate = useNavigate();
+   useEffect(() => {
+     setTimeout(() => {
+       navigate("/login");
+     }, 2000);
+   });
   return (
     <>
       <section className="w-full flex items-center justify-center h-screen bg-primary relative overflow-hidden">
