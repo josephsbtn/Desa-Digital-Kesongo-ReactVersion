@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import LogoHitamPng from "../../component/Logo/LogoHitamPng.png";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Register() {
   const [nama, setNama] = useState("");
@@ -11,6 +12,20 @@ function Register() {
   const [accept, setAccept] = useState(false);
   const [error, setError] = useState("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const { parsePhoneNumberFromString } = require("libphonenumber-js");
+
+  function formatPhoneNumber(phoneNumber) {
+    try {
+      const parsed = parsePhoneNumberFromString(phoneNumber, "ID");
+      if (parsed && parsed.isValid()) {
+        setNomorHP(parsed.format("E.164"));
+      }
+      throw new Error("Invalid phone number");
+    } catch (error) {
+      console.error("Phone number formatting error:", error.message);
+      return null;
+    }
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -27,7 +42,7 @@ function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError(""); // Clear any previous errors
+    setError("");
 
     if (!nama || !email || !password || !nomorHP) {
       setError("Please fill in all fields.");
@@ -102,7 +117,7 @@ function Register() {
             id="nomorHP"
             label="Nomor Telepon (Whatsapp)"
             value={nomorHP}
-            onChange={(e) => setNomorHP(e.target.value)}
+            onChange={(e) => formatPhoneNumber(e.target.value)}
           />
           <InputField
             id="password"
@@ -123,9 +138,14 @@ function Register() {
             <input
               type="checkbox"
               id="checkbox"
-              checked={accept}
+              className="
+    w-4 h-4 appearance-none border border-gray-300 flex justify-center items-center
+    checked:bg-primary checked:border-primary
+    checked:before:content-['✓'] checked:before:text-white 
+    checked:before:block checked:before:text-center checked:before:font-medium checked:before:text-xs
+    focus:outline-none
+  "
               onChange={(e) => setAccept(e.target.checked)}
-              className="w-4 h-4 border border-gray-300 rounded-sm focus:ring-primary"
             />
             <p className="text-xs text-disableText font-nunito w-[90%] font-medium tracking-tight">
               Saya setuju dan telah membaca{" "}
@@ -141,6 +161,20 @@ function Register() {
             Buat Akun
           </button>
         </form>
+        <h1 className="text-disableText font-nunito text-xs w-full text-center mt-4">
+          Sudah punya akun?{" "}
+          <Link to="/login" className="text-primary">
+            Masuk
+          </Link>{" "}
+        </h1>
+      </div>
+      <div>
+        <div className="fixed border-2 border-white opacity-50  border-b-secondPrime w-[160vw] h-[160vw] rounded-full left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] -z-10">
+          <div className="w-6 h-6 border-secondPrime border-2 absolute left-[30%] top-[96%] bg-white translate-x-[-50%] translate-y-[-50%] rounded-full"></div>
+        </div>
+        <div className="fixed border-2 border-white opacity-50 border-b-secondPrime w-[190vw] h-[190vw] rounded-full left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] -z-10">
+          <div className="w-6 h-6 border-secondPrime border-2 absolute left-[60%] top-[99%] bg-white translate-x-[-50%] translate-y-[-50%] rounded-full"></div>
+        </div>
       </div>
     </section>
   );

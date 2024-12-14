@@ -10,9 +10,8 @@ function App() {
     <div className="w-full">
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<SplashScreen />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/" exact Component={SplashScreen} />
+          <Route path="/login" exact Component={Login} />
           <Route path="/OTPscreen" exact Component={OTPscreen} />
           <Route path="/register" exact Component={Register} />
         </Routes>

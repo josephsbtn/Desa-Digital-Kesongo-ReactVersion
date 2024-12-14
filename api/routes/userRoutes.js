@@ -69,7 +69,7 @@ router.put("/updateProfile", async (req, res) => {
 });
 
 const sendOTP = async (toPhoneNumber) => {
-  const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+  const otpCode = Math.floor(1000 + Math.random() * 9000).toString();
   try {
     await client.messages.create({
       body: `Your OTP code is: ${otpCode}`,
@@ -96,35 +96,34 @@ router.post("/send-code", async (req, res) => {
     if (result.status !== 200) {
       return res.status(result.status).json({ message: result.message });
     }
-
-    return res.status(200).json({ message: result.message });
+    res.send(result);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server Error!!!" });
   }
 });
 
-router.post("/verify-code", async (req, res) => {
-  try {
-    const { phone_number, code } = req.body;
+// router.post("/verify-code", async (req, res) => {
+//   try {
+//     const { phone_number, code } = req.body;
 
-    if (!phone_number || !code) {
-      return res
-        .status(400)
-        .json({ message: "Nomor telepon dan kode verifikasi harus diisi!!" });
-    }
+//     if (!phone_number || !code) {
+//       return res
+//         .status(400)
+//         .json({ message: "Nomor telepon dan kode verifikasi harus diisi!!" });
+//     }
 
-    const result = await textflow.verifyCode(phone_number, code);
+//     const result = await textflow.verifyCode(phone_number, code);
 
-    if (result.valid) {
-      return res.status(200).json({ message: "Wrong code" });
-    }
+//     if (result.valid) {
+//       return res.status(200).json({ message: "Wrong code" });
+//     }
 
-    return res.status(result.status).json({ message: result.message });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error!!!" });
-  }
-});
+//     return res.status(result.status).json({ message: result.message });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: "Server Error!!!" });
+//   }
+// });
 
 module.exports = router;
