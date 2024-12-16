@@ -4,6 +4,10 @@ const textflow = require("textflow.js");
 textflow.useKey(
   "ahSpTG4yfwIgOLuhigV4ZJewzqtWQETSbfW7WVU5r8c28QnPLLoe9glYe18CIwdL"
 );
+const twilio = require("twilio");
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = twilio(accountSid, authToken);
 
 const userModel = require("../model/userModel");
 
